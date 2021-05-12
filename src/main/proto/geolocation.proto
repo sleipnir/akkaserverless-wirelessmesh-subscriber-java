@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "akkaserverless/annotations.proto";
+
+package geolocation;
+
+option java_outer_classname = "GeolocationApi";
+
+/**
+* The following section contains the message definitions needed for the service below.
+**/
+
+message AddCustomerLocationCommand {
+  string zipcode = 1 [(akkaserverless.field).entity_key = true];
+  string customer_location_id = 2 [(akkaserverless.field).entity_key = true];
+}
+
+message RemoveCustomerLocationCommand {
+  string zipcode = 1 [(akkaserverless.field).entity_key = true];
+  string customer_location_id = 2 [(akkaserverless.field).entity_key = true];
+}
+
+message GetGeolocationCommand {
+  string zipcode = 1 [(akkaserverless.field).entity_key = true];
+}
+
+message CustomerLocation {
+  string customerLocationId = 1;
+  string zipcode = 2;
+}
+
+message GeolocationState {
+  string zipcode = 1;
+  repeated CustomerLocation customer_locations = 2;
+}
+
+option (akkaserverless.file).value_entity = {
+  name: "GeolocationEntity"
+  entity_type: "geolocation-entity"
+  state: { type: "GeolocationState" }
+};
+
+/**
+* The service definition. Note: GRPC is the default mechanism, but the google.api.http option gives us http capability
+* for free.
+**/
+service GeolocationService {
+  rpc AddCustomerLocation(AddCustomerLocationCommand) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/geolocation/add-customer-location"
+        body: "*"
+    };
+  }
+
+  rpc RemoveCustomerLocation(RemoveCustomerLocationCommand) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/geolocation/remove-customer-location"
+        body: "*"
+      };
+  }
+
+  rpc GetGeolocation(GetGeolocationCommand) returns (GeolocationState) {
+      option (google.api.http) = {
+        get: "/geolocation/get-geolocation"
+          body: "*"
+        };
+    }
+}
