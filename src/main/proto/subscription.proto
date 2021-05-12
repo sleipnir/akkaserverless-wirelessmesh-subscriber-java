@@ -7,6 +7,8 @@ import "akkaserverless/annotations.proto";
 
 package geolocation.subscription;
 
+option java_outer_classname = "SubscriptionApi";
+
 message CustomerLocationAdded {
   string customerLocationId = 1;
   string accessToken = 2;
