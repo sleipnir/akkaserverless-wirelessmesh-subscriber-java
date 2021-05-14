@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import geolocation.subscription.SubscriptionApi;
+import wirelessmeshdomain.Wirelessmeshdomain;
 
 /**
  * This is the entry point into this user function.
@@ -21,7 +22,8 @@ public class GeolocationMain {
                             GeolocationApi.getDescriptor().findServiceByName("GeolocationService"))
                     .registerAction(
                             SubscriptionAction.class,
-                            SubscriptionApi.getDescriptor().findServiceByName("SubscriptionService"));
+                            SubscriptionApi.getDescriptor().findServiceByName("SubscriptionService"),
+                            Wirelessmeshdomain.getDescriptor());
 
     public static void main(String... args) throws Exception {
         LOG.info("started");
