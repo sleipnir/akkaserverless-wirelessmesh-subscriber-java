@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package wirelessmeshdomain;
+
+/**
+* This is the domain of the 'upstream' service we're consuming events from.
+**/
+
+message CustomerLocationAdded {
+  string customerLocationId = 1;
+  string accessToken = 2;
+  string email = 3;
+  string zipcode = 4;
+}
+
+message CustomerLocationRemoved {
+  string customerLocationId = 1;
+  string zipcode = 2;
+}

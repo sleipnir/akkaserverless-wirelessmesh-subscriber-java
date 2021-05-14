@@ -9,9 +9,10 @@ import com.akkaserverless.javasdk.action.Handler;
 import com.google.protobuf.Any;
 import com.google.protobuf.Empty;
 
-import geolocation.subscription.SubscriptionApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import wirelessmeshdomain.Wirelessmeshdomain;
 
 /**
  * An action to foward a subscribed pubsub event to a value entity.
@@ -38,7 +39,7 @@ public class SubscriptionAction {
     }
 
     @Handler
-    public Reply<Empty> forwardCustomerLocationAdded(SubscriptionApi.CustomerLocationAdded in, ActionContext ctx) {
+    public Reply<Empty> forwardCustomerLocationAdded(Wirelessmeshdomain.CustomerLocationAdded in, ActionContext ctx) {
         LOG.info("forwardCustomerLocationAdded::Received: '{}'", in);
 
         GeolocationApi.AddCustomerLocationCommand command =
@@ -51,7 +52,7 @@ public class SubscriptionAction {
     }
 
     @Handler
-    public Reply<Empty> forwardCustomerLocationRemoved(SubscriptionApi.CustomerLocationRemoved in, ActionContext ctx) {
+    public Reply<Empty> forwardCustomerLocationRemoved(Wirelessmeshdomain.CustomerLocationRemoved in, ActionContext ctx) {
         LOG.info("forwardCustomerLocationRemoved::Received: '{}'", in);
 
         GeolocationApi.RemoveCustomerLocationCommand command =

@@ -4,31 +4,20 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/any.proto";
 import "akkaserverless/annotations.proto";
+import "wirelessmeshdomain.proto";
 
 package geolocation.subscription;
 
 option java_outer_classname = "SubscriptionApi";
 
-message CustomerLocationAdded {
-  string customerLocationId = 1;
-  string accessToken = 2;
-  string email = 3;
-  string zipcode = 4;
-}
-
-message CustomerLocationRemoved {
-  string customerLocationId = 1;
-  string zipcode = 2;
-}
-
 service SubscriptionService {
-  rpc ForwardCustomerLocationAdded(CustomerLocationAdded) returns (google.protobuf.Empty) {
+  rpc ForwardCustomerLocationAdded(wirelessmeshdomain.CustomerLocationAdded) returns (google.protobuf.Empty) {
     option (akkaserverless.method).eventing.in = {
       topic: "wirelessmesh";
     };
   }
 
-  rpc ForwardCustomerLocationRemoved(CustomerLocationRemoved) returns (google.protobuf.Empty) {
+  rpc ForwardCustomerLocationRemoved(wirelessmeshdomain.CustomerLocationRemoved) returns (google.protobuf.Empty) {
       option (akkaserverless.method).eventing.in = {
         topic: "wirelessmesh";
       };
