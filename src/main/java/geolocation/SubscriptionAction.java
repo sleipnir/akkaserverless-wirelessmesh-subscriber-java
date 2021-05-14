@@ -6,15 +6,20 @@ import com.akkaserverless.javasdk.action.Action;
 import com.akkaserverless.javasdk.action.ActionContext;
 import com.akkaserverless.javasdk.action.ActionCreationContext;
 import com.akkaserverless.javasdk.action.Handler;
+import com.google.protobuf.Any;
 import com.google.protobuf.Empty;
 
 import geolocation.subscription.SubscriptionApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * An action to foward a subscribed pubsub event to a value entity.
  */
 @Action
 public class SubscriptionAction {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SubscriptionAction.class);
 
     private static final String GEOLOCATION_SERVICE = "geolocation.GeolocationService";
 
@@ -34,6 +39,8 @@ public class SubscriptionAction {
 
     @Handler
     public Reply<Empty> forwardCustomerLocationAdded(SubscriptionApi.CustomerLocationAdded in, ActionContext ctx) {
+        LOG.info("forwardCustomerLocationAdded::Received: '{}'", in);
+
         GeolocationApi.AddCustomerLocationCommand command =
                 GeolocationApi.AddCustomerLocationCommand.newBuilder()
                 .setZipcode(in.getZipcode())
@@ -45,6 +52,8 @@ public class SubscriptionAction {
 
     @Handler
     public Reply<Empty> forwardCustomerLocationRemoved(SubscriptionApi.CustomerLocationRemoved in, ActionContext ctx) {
+        LOG.info("forwardCustomerLocationRemoved::Received: '{}'", in);
+
         GeolocationApi.RemoveCustomerLocationCommand command =
                 GeolocationApi.RemoveCustomerLocationCommand.newBuilder()
                         .setZipcode(in.getZipcode())
@@ -52,5 +61,10 @@ public class SubscriptionAction {
                         .build();
 
         return Reply.forward(removeCustomerLocationCommandRef.createCall(command));
+    }
+
+    @Handler
+    public Empty catchOthers(Any in) {
+        return Empty.getDefaultInstance();
     }
 }

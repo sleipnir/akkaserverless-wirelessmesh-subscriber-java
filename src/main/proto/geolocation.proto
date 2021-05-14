@@ -58,13 +58,12 @@ service GeolocationService {
     option (google.api.http) = {
       post: "/geolocation/remove-customer-location"
         body: "*"
-      };
+    };
   }
 
   rpc GetGeolocation(GetGeolocationCommand) returns (GeolocationState) {
       option (google.api.http) = {
         get: "/geolocation/get-geolocation"
-          body: "*"
-        };
+      };
     }
 }
